@@ -1,7 +1,7 @@
 Purpose
 --------------
 
-![Screenshot](https://raw.github.com/nicklockwood/FPSControls/Screenshot.jpg)
+![Screenshot](https://raw.github.com/nicklockwood/FPSControls/master/Screenshot.jpg)
 
 
 FPSControls is an experimental implementation of touch-friendly first-person shooter controls using SceneKit and Swift.
