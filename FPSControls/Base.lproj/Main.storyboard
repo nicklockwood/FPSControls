@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Rampage" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" autoenablesDefaultLighting="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cp-Px-prv">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </sceneKitView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zGS-Jm-VnD">
+                                <rect key="frame" x="16" y="36" width="568" height="528"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tap anywhere to fire. Tap repeatedly for autofire." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xoX-sa-680">
+                                        <rect key="frame" x="96" y="459" width="376" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="HFH-Bm-IVR"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Swipe left side of screen with your left thumb to move around" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ON-dG-vVL">
+                                        <rect key="frame" x="27" y="184" width="200" height="160"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="lDD-t3-Upj"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Swipe right side of screen with your right thumb to look around" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQo-Qv-I8v">
+                                        <rect key="frame" x="341" y="192" width="200" height="152"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="xoX-sa-680" firstAttribute="leading" secondItem="zGS-Jm-VnD" secondAttribute="leading" constant="96" id="0cr-Pc-MEA"/>
+                                    <constraint firstItem="1ON-dG-vVL" firstAttribute="centerY" secondItem="zGS-Jm-VnD" secondAttribute="centerY" id="1II-lJ-58M"/>
+                                    <constraint firstItem="xoX-sa-680" firstAttribute="centerX" secondItem="zGS-Jm-VnD" secondAttribute="centerX" id="Bc9-Ob-cfT"/>
+                                    <constraint firstItem="JQo-Qv-I8v" firstAttribute="height" secondItem="1ON-dG-vVL" secondAttribute="height" id="Nbo-bt-Goq"/>
+                                    <constraint firstAttribute="bottom" secondItem="xoX-sa-680" secondAttribute="bottomMargin" constant="32" id="Qox-UH-kWL"/>
+                                    <constraint firstItem="JQo-Qv-I8v" firstAttribute="firstBaseline" secondItem="1ON-dG-vVL" secondAttribute="firstBaseline" id="b81-05-daY"/>
+                                    <constraint firstItem="xoX-sa-680" firstAttribute="top" secondItem="1ON-dG-vVL" secondAttribute="bottom" constant="74" id="gub-5Y-Rm9"/>
+                                    <constraint firstAttribute="trailing" secondItem="JQo-Qv-I8v" secondAttribute="trailing" constant="27" id="iEh-4G-298"/>
+                                    <constraint firstItem="JQo-Qv-I8v" firstAttribute="width" secondItem="1ON-dG-vVL" secondAttribute="width" id="lAK-eI-VPd"/>
+                                    <constraint firstItem="JQo-Qv-I8v" firstAttribute="centerY" secondItem="1ON-dG-vVL" secondAttribute="centerY" constant="4" id="nE7-w4-mW6"/>
+                                    <constraint firstItem="1ON-dG-vVL" firstAttribute="baseline" secondItem="JQo-Qv-I8v" secondAttribute="baseline" id="nde-nL-UK5"/>
+                                    <constraint firstItem="1ON-dG-vVL" firstAttribute="leading" secondItem="zGS-Jm-VnD" secondAttribute="leading" constant="27" id="vlB-ut-HOv"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="nde-nL-UK5"/>
+                                        <exclude reference="b81-05-daY"/>
+                                        <exclude reference="gub-5Y-Rm9"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="yX1-uH-iNS" appends="YES" id="yih-ZM-kT9"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7cp-Px-prv" firstAttribute="centerX" secondItem="zGS-Jm-VnD" secondAttribute="centerX" id="DjP-8K-lmW"/>
+                            <constraint firstItem="7cp-Px-prv" firstAttribute="centerY" secondItem="zGS-Jm-VnD" secondAttribute="centerY" id="IHR-Al-dEt"/>
+                            <constraint firstItem="7cp-Px-prv" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Y02-aW-Q1H"/>
+                            <constraint firstItem="7cp-Px-prv" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="c4i-pF-X8l"/>
+                            <constraint firstItem="zGS-Jm-VnD" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="top" constant="16" id="fzR-P0-dAJ"/>
+                            <constraint firstItem="zGS-Jm-VnD" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="g4C-h6-cQo"/>
+                            <constraint firstAttribute="bottom" secondItem="zGS-Jm-VnD" secondAttribute="bottom" constant="36" id="rYY-Kc-416"/>
+                            <constraint firstItem="7cp-Px-prv" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="wee-cN-GGH"/>
+                            <constraint firstAttribute="trailing" secondItem="7cp-Px-prv" secondAttribute="trailing" id="zll-Gg-8Pl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="overlayView" destination="zGS-Jm-VnD" id="d8H-Wg-jNM"/>
+                        <outlet property="sceneView" destination="7cp-Px-prv" id="Vai-ub-EGN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="yX1-uH-iNS">
+                    <connections>
+                        <action selector="hideOverlay" destination="vXZ-lx-hvc" id="4rd-U6-Exj"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+        </scene>
+    </scenes>
+</document>
