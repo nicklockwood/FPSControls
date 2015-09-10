@@ -1,6 +1,6 @@
 FPSControls
 
-Version 0.1, November 29th, 2014
+Version 1.0.1, September 10th, 2015
 
 Copyright (C) 2014 Charcoal Design
 

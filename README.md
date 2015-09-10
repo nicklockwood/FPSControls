@@ -5,12 +5,6 @@ FPSControls
 ![Screenshot](https://raw.github.com/nicklockwood/FPSControls/master/Screenshot.jpg)
 
 
-Note
---------------
-
-I've updated the code to compile on Xcode 7 with Swift 2, however it's currently broken on iOS 9 for reasons I've yet to determine. If you want to try it, run it on iOS 8.x. If you know how to fix it, please open a PR!
-
-
 Purpose
 --------------
 
@@ -35,7 +29,7 @@ It should be quite feasible to add other, lower-priority "hunt and peck" control
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.x (NOT 9.0) (Xcode 7.0, Apple LLVM compiler 7.0)
+* Supported build target - iOS 9.0 (Xcode 7.0, Apple LLVM compiler 7.0)
 * Earliest supported deployment target - iOS 8.0
 * Earliest compatible deployment target - iOS 8.0
 
@@ -55,7 +49,7 @@ Release notes
 
 Version 1.0.1
 
-- Updated for Swift 2.0 / Xcode 7.0 compatibility
+- Updated for Swift 2 / Xcode 7 and iOS 9 compatibility
 
 Version 1.0
 

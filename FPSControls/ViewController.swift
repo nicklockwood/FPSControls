@@ -68,13 +68,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 heroNode.physicsBody?.rollingFriction = 0
                 heroNode.physicsBody?.friction = 0
                 heroNode.physicsBody?.restitution = 0
-                if #available(iOS 9.0, *) {
-                    heroNode.physicsBody?.affectedByGravity = false
-                } else {
-                    heroNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0, z: 1)
-                }
+                heroNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0, z: 1)
                 heroNode.physicsBody?.categoryBitMask = CollisionCategory.Hero
                 heroNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Bullet
+                if #available(iOS 9.0, *) {
+                    heroNode.physicsBody?.contactTestBitMask = ~0
+                }
                 heroNode.position = SCNVector3(x: entity.x, y: 0.5, z: entity.y)
                 scene.rootNode.addChildNode(heroNode)
 
@@ -86,6 +85,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 monsterNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
                 monsterNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
                 monsterNode.physicsBody?.collisionBitMask = CollisionCategory.All
+                if #available(iOS 9.0, *) {
+                    monsterNode.physicsBody?.contactTestBitMask = ~0
+                }
                 scene.rootNode.addChildNode(monsterNode)
             }
         }
@@ -156,9 +158,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         mapNode.addChildNode(ceilingNode)
 
         //set up map physics
-        mapNode.physicsBody = SCNPhysicsBody(type: .Static, shape: SCNPhysicsShape(node: mapNode, options: nil))
+        mapNode.physicsBody = SCNPhysicsBody(type: .Static, shape: SCNPhysicsShape(node: mapNode, options: [SCNPhysicsShapeKeepAsCompoundKey: true]))
         mapNode.physicsBody?.categoryBitMask = CollisionCategory.Map
         mapNode.physicsBody?.collisionBitMask = CollisionCategory.All
+        if #available(iOS 9.0, *) {
+            mapNode.physicsBody?.contactTestBitMask = ~0
+        }
         scene.rootNode.addChildNode(mapNode)
         
         //set the scene to the view
