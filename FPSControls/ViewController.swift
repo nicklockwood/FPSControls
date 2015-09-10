@@ -62,22 +62,26 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             case .Hero:
                 
                 heroNode = SCNNode()
-                heroNode.position = SCNVector3(x: entity.x, y: 0.5, z: entity.y)
                 heroNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil))
                 heroNode.physicsBody?.angularDamping = 0.9999999
                 heroNode.physicsBody?.damping = 0.9999999
                 heroNode.physicsBody?.rollingFriction = 0
                 heroNode.physicsBody?.friction = 0
                 heroNode.physicsBody?.restitution = 0
-                heroNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0, z: 1) //not affected by gravity
+                if #available(iOS 9.0, *) {
+                    heroNode.physicsBody?.affectedByGravity = false
+                } else {
+                    heroNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0, z: 1)
+                }
                 heroNode.physicsBody?.categoryBitMask = CollisionCategory.Hero
                 heroNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Bullet
+                heroNode.position = SCNVector3(x: entity.x, y: 0.5, z: entity.y)
                 scene.rootNode.addChildNode(heroNode)
 
             case .Monster:
                 
                 let monsterNode = SCNNode()
-                monsterNode.position = SCNVector3(x: entity.x, y: 0.4, z: entity.y)
+                monsterNode.position = SCNVector3(x: entity.x, y: 0.3, z: entity.y)
                 monsterNode.geometry = SCNCylinder(radius: 0.15, height: 0.6)
                 monsterNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
                 monsterNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
@@ -106,28 +110,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             if tile.type == .Wall {
                 
                 //create walls
-                if tile.visibility & .Top != nil {
+                if tile.visibility.contains(.Top) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
                     wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(M_PI))
                     wallNode.position = SCNVector3(x: Float(tile.x) + 0.5, y: 0.5, z: Float(tile.y))
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility & .Right != nil {
+                if tile.visibility.contains(.Right) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
                     wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(M_PI_2))
                     wallNode.position = SCNVector3(x: Float(tile.x) + 1, y: 0.5, z: Float(tile.y) + 0.5)
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility & .Bottom != nil {
+                if tile.visibility.contains(.Bottom) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
                     wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 0)
                     wallNode.position = SCNVector3(x: Float(tile.x) + 0.5, y: 0.5, z: Float(tile.y) + 1)
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility & .Left != nil {
+                if tile.visibility.contains(.Left) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
                     wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(-M_PI_2))
@@ -143,14 +147,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         floorNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(-M_PI_2))
         floorNode.position = SCNVector3(x: Float(map.width)/2, y: 0, z: Float(map.height)/2)
         mapNode.addChildNode(floorNode)
-        
+
         //add ceiling
         let ceilingNode = SCNNode()
         ceilingNode.geometry = SCNPlane(width: CGFloat(map.width), height: CGFloat(map.height))
         ceilingNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(M_PI_2))
         ceilingNode.position = SCNVector3(x: Float(map.width)/2, y: 1, z: Float(map.height)/2)
         mapNode.addChildNode(ceilingNode)
-        
+
         //set up map physics
         mapNode.physicsBody = SCNPhysicsBody(type: .Static, shape: SCNPhysicsShape(node: mapNode, options: nil))
         mapNode.physicsBody?.categoryBitMask = CollisionCategory.Map
@@ -252,10 +256,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
     func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
         
         //get walk gesture translation
-        var translation = walkGesture.translationInView(self.view)
+        let translation = walkGesture.translationInView(self.view)
 
         //create impulse vector for hero
-        let angle = heroNode.presentationNode().rotation.w * heroNode.presentationNode().rotation.y
+        let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
         var impulse = SCNVector3(x: max(-1, min(1, Float(translation.x) / 50)), y: 0, z: max(-1, min(1, Float(-translation.y) / 50)))
         impulse = SCNVector3(
             x: impulse.x * cos(angle) - impulse.z * sin(angle),
@@ -271,7 +275,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             if now - lastFired > 1 / fireRate {
                 
                 //get hero direction vector
-                let angle = heroNode.presentationNode().rotation.w * heroNode.presentationNode().rotation.y
+                let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
                 var direction = SCNVector3(x: -sin(angle), y: 0, z: -cos(angle))
                 
                 //get elevation
@@ -287,7 +291,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 }()
                 bullets.append(bulletNode)
                 bulletNode.geometry = SCNBox(width: CGFloat(bulletRadius) * 2, height: CGFloat(bulletRadius) * 2, length: CGFloat(bulletRadius) * 2, chamferRadius: CGFloat(bulletRadius))
-                bulletNode.position = SCNVector3(x: heroNode.presentationNode().position.x, y: 0.4, z: heroNode.presentationNode().position.z)
+                bulletNode.position = SCNVector3(x: heroNode.presentationNode.position.x, y: 0.4, z: heroNode.presentationNode.position.z)
                 bulletNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
                 bulletNode.physicsBody?.categoryBitMask = CollisionCategory.Bullet
                 bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Hero
@@ -295,7 +299,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 self.sceneView.scene!.rootNode.addChildNode(bulletNode)
                 
                 //apply impulse
-                var impulse = SCNVector3(x: direction.x * Float(bulletImpulse), y: direction.y * Float(bulletImpulse), z: direction.z * Float(bulletImpulse))
+                let impulse = SCNVector3(x: direction.x * Float(bulletImpulse), y: direction.y * Float(bulletImpulse), z: direction.z * Float(bulletImpulse))
                 bulletNode.physicsBody?.applyForce(impulse, impulse: true)
                 
                 //update timestamp

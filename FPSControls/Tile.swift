@@ -15,23 +15,14 @@ enum TileType {
     case Floor
 }
 
-//http://natecook.com/blog/2014/07/swift-options-bitmask-generator/
-struct FaceVisibility : RawOptionSetType {
-    
-    typealias RawValue = UInt
-    private var value: UInt = 0
-    init(_ value: UInt) { self.value = value }
-    init(rawValue value: UInt) { self.value = value }
-    init(nilLiteral: ()) { self.value = 0 }
-    static var allZeros: FaceVisibility { return self(0) }
-    static func fromMask(raw: UInt) -> FaceVisibility { return self(raw) }
-    var rawValue: UInt { return self.value }
-    
-    static var None: FaceVisibility { return self(0) }
-    static var Top: FaceVisibility { return FaceVisibility(1 << 0) }
-    static var Right: FaceVisibility { return FaceVisibility(1 << 1) }
-    static var Bottom: FaceVisibility { return FaceVisibility(1 << 2) }
-    static var Left: FaceVisibility { return FaceVisibility(1 << 3) }
+struct FaceVisibility : OptionSetType {
+
+    let rawValue: UInt
+    static let None = FaceVisibility(rawValue: 0)
+    static let Top = FaceVisibility(rawValue: 1 << 0)
+    static let Right = FaceVisibility(rawValue: 1 << 1)
+    static let Bottom = FaceVisibility(rawValue: 1 << 2)
+    static let Left = FaceVisibility(rawValue: 1 << 3)
 }
 
 class Tile {
@@ -42,16 +33,16 @@ class Tile {
     var visibility: FaceVisibility {
         var visibility: FaceVisibility = .None
         if x > 0 && map.tile(x - 1, y).type == .Floor {
-            visibility |= .Left
+            visibility.unionInPlace(.Left)
         }
         if x < map.width - 1 && map.tile(x + 1, y).type == .Floor {
-            visibility |= .Right
+            visibility.unionInPlace(.Right)
         }
         if y > 0 && map.tile(x, y - 1).type == .Floor {
-            visibility |= .Top
+            visibility.unionInPlace(.Top)
         }
         if y < map.height - 1 && map.tile(x, y + 1).type == .Floor {
-            visibility |= .Bottom
+            visibility.unionInPlace(.Bottom)
         }
         return visibility
     }

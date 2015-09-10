@@ -11,7 +11,7 @@ import UIKit
 class Map {
     
     let width: Int, height: Int
-    let tiles: [Tile]
+    private (set) var tiles: [Tile]
     var entities = [Entity]()
 
     init(width: Int, height: Int) {
@@ -34,10 +34,10 @@ class Map {
         let height = Int(CGImageGetHeight(image.CGImage))
         let bytesPerPixel = 4
         let bytesPerRow = width * bytesPerPixel
-        let byteCount = bytesPerRow * height
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let info = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
-        let context = CGBitmapContextCreate(nil, UInt(width), UInt(height), 8, UInt(bytesPerRow), colorSpace, info)
+        let info = CGImageAlphaInfo.PremultipliedFirst.rawValue
+
+        let context = CGBitmapContextCreate(nil, width, height, 8, bytesPerRow, colorSpace, info);
         let data = UnsafePointer<UInt8>(CGBitmapContextGetData(context))
         
         //draw image into context
@@ -50,7 +50,6 @@ class Map {
             
             //get color components
             let offset = i * bytesPerPixel
-            let alpha = data[offset]
             let red = data[offset + 1]
             let green = data[offset + 2]
             let blue = data[offset + 3]

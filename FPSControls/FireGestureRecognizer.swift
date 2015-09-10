@@ -13,9 +13,9 @@ class FireGestureRecognizer: UIGestureRecognizer {
     
     var timeThreshold = 0.15
     var distanceThreshold = 5.0
-    private var startTimes = NSMutableDictionary()
-    
-    override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
+    private var startTimes = [Int:NSTimeInterval]()
+
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
         
         //record the start times of each touch
         for touch in touches {
@@ -23,7 +23,7 @@ class FireGestureRecognizer: UIGestureRecognizer {
         }
     }
     
-    override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
         
         //discard any touches that have moved
         for touch in touches {
@@ -31,17 +31,17 @@ class FireGestureRecognizer: UIGestureRecognizer {
             let newPos = touch.locationInView(view)
             let oldPos = touch.previousLocationInView(view)
             let distanceDelta = Double(max(abs(newPos.x - oldPos.x), abs(newPos.y - oldPos.y)))
-            if (distanceDelta >= distanceThreshold) {
-                startTimes.removeObjectForKey(touch.hash)
+            if distanceDelta >= distanceThreshold {
+                startTimes[touch.hash] = nil
             }
         }
     }
     
-    override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
         
         for touch in touches {
-            
-            let startTime = startTimes[touch.hash] as NSTimeInterval?
+
+            let startTime = startTimes[touch.hash]
             if let startTime = startTime {
                 
                 //check if within time
@@ -56,7 +56,7 @@ class FireGestureRecognizer: UIGestureRecognizer {
         reset()
     }
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) {
         
         reset()
     }
