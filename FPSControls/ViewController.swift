@@ -19,7 +19,7 @@ struct CollisionCategory {
     static let Bullet: Int = 0b00001000
 }
 
-class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRendererDelegate {
+class ViewController: UIViewController {
 
     //MARK: config
     let autofireTapTimeThreshold = 0.2
@@ -206,21 +206,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        
-        if gestureRecognizer == lookGesture {
-            return touch.locationInView(view).x > view.frame.size.width / 2
-        } else if gestureRecognizer == walkGesture {
-            return touch.locationInView(view).x < view.frame.size.width / 2
-        }
-        return true
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        return true
-    }
-    
     func lookGestureRecognized(gesture: UIPanGestureRecognizer) {
         
         //get translation and convert to rotation
@@ -257,60 +242,4 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         }
         lastTappedFire = now
     }
-
-    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
-        
-        //get walk gesture translation
-        let translation = walkGesture.translationInView(self.view)
-
-        //create impulse vector for hero
-        let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
-        var impulse = SCNVector3(x: max(-1, min(1, Float(translation.x) / 50)), y: 0, z: max(-1, min(1, Float(-translation.y) / 50)))
-        impulse = SCNVector3(
-            x: impulse.x * cos(angle) - impulse.z * sin(angle),
-            y: 0,
-            z: impulse.x * -sin(angle) - impulse.z * cos(angle)
-        )
-        heroNode.physicsBody?.applyForce(impulse, impulse: true)
-        
-        //handle firing
-        let now = CFAbsoluteTimeGetCurrent()
-        if now - lastTappedFire < autofireTapTimeThreshold {
-            let fireRate = min(Double(maxRoundsPerSecond), Double(tapCount) / autofireTapTimeThreshold)
-            if now - lastFired > 1 / fireRate {
-                
-                //get hero direction vector
-                let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
-                var direction = SCNVector3(x: -sin(angle), y: 0, z: -cos(angle))
-                
-                //get elevation
-                direction = SCNVector3(x: cos(elevation) * direction.x, y: sin(elevation), z: cos(elevation) * direction.z)
-                
-                //create or recycle bullet node
-                let bulletNode: SCNNode = {
-                    if self.bullets.count < self.maxBullets {
-                        return SCNNode()
-                    } else {
-                        return self.bullets.removeAtIndex(0)
-                    }
-                }()
-                bullets.append(bulletNode)
-                bulletNode.geometry = SCNBox(width: CGFloat(bulletRadius) * 2, height: CGFloat(bulletRadius) * 2, length: CGFloat(bulletRadius) * 2, chamferRadius: CGFloat(bulletRadius))
-                bulletNode.position = SCNVector3(x: heroNode.presentationNode.position.x, y: 0.4, z: heroNode.presentationNode.position.z)
-                bulletNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
-                bulletNode.physicsBody?.categoryBitMask = CollisionCategory.Bullet
-                bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Hero
-                bulletNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0.5, z: 1)
-                self.sceneView.scene!.rootNode.addChildNode(bulletNode)
-                
-                //apply impulse
-                let impulse = SCNVector3(x: direction.x * Float(bulletImpulse), y: direction.y * Float(bulletImpulse), z: direction.z * Float(bulletImpulse))
-                bulletNode.physicsBody?.applyForce(impulse, impulse: true)
-                
-                //update timestamp
-                lastFired = now
-            }
-        }
-    }
 }
-

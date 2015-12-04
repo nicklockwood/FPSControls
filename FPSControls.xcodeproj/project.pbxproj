@@ -17,6 +17,8 @@
 		01D1D1A71A29EEDF0067D6D3 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D1D1A51A29EEDF0067D6D3 /* Tile.swift */; };
 		01D1D1AC1A29EF320067D6D3 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D1D1AB1A29EF320067D6D3 /* Map.swift */; };
 		01D1D1AE1A29F7B00067D6D3 /* FireGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D1D1AD1A29F7B00067D6D3 /* FireGestureRecognizer.swift */; };
+		49E5D23E1C1238B600F99427 /* GestureRecognizerDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5D23D1C1238B600F99427 /* GestureRecognizerDelegateExtension.swift */; };
+		49E5D2401C12396500F99427 /* SceneRendererDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5D23F1C12396500F99427 /* SceneRendererDelegateExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		01D1D1A51A29EEDF0067D6D3 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		01D1D1AB1A29EF320067D6D3 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		01D1D1AD1A29F7B00067D6D3 /* FireGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireGestureRecognizer.swift; sourceTree = "<group>"; };
+		49E5D23D1C1238B600F99427 /* GestureRecognizerDelegateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizerDelegateExtension.swift; sourceTree = "<group>"; };
+		49E5D23F1C12396500F99427 /* SceneRendererDelegateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneRendererDelegateExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,7 @@
 		01D1D1A91A29EF040067D6D3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				49E5D23C1C12384200F99427 /* Extensions */,
 				01558A351A0291A700083EB1 /* AppDelegate.swift */,
 				01558A371A0291A700083EB1 /* ViewController.swift */,
 				01D1D1AD1A29F7B00067D6D3 /* FireGestureRecognizer.swift */,
@@ -111,6 +116,15 @@
 				01D1D1A21A29EDD10067D6D3 /* Map.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		49E5D23C1C12384200F99427 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				49E5D23D1C1238B600F99427 /* GestureRecognizerDelegateExtension.swift */,
+				49E5D23F1C12396500F99427 /* SceneRendererDelegateExtension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,7 +203,9 @@
 				01558A381A0291A700083EB1 /* ViewController.swift in Sources */,
 				01D1D1A61A29EEDF0067D6D3 /* Entity.swift in Sources */,
 				01D1D1AE1A29F7B00067D6D3 /* FireGestureRecognizer.swift in Sources */,
+				49E5D2401C12396500F99427 /* SceneRendererDelegateExtension.swift in Sources */,
 				01D1D1A71A29EEDF0067D6D3 /* Tile.swift in Sources */,
+				49E5D23E1C1238B600F99427 /* GestureRecognizerDelegateExtension.swift in Sources */,
 				01558A361A0291A700083EB1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
