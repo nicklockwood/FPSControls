@@ -47,6 +47,11 @@ Run it on a real device instead. You should get 60fps on an iPhone 6, or compara
 Release notes
 ---------------
 
+Version 1.0.2
+
+- New: [2015-12-05] @ltfschoen Added Scene Class for creating Singleton Pattern instance
+- New: [2015-12-05] @ltfschoen Refactored View Controller into Scene Class and Extensions
+
 Version 1.0.1
 
 - Updated for Swift 2 / Xcode 7 and iOS 9 compatibility
