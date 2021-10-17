@@ -30,19 +30,19 @@ class Map {
     convenience init(image: UIImage) {
         
         //create image context
-        let width = Int(CGImageGetWidth(image.CGImage))
-        let height = Int(CGImageGetHeight(image.CGImage))
+        let width = Int(image.cgImage!.width)
+        let height = Int(image.cgImage!.height)
         let bytesPerPixel = 4
         let bytesPerRow = width * bytesPerPixel
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let info = CGImageAlphaInfo.PremultipliedFirst.rawValue
+        let info = CGImageAlphaInfo.premultipliedFirst.rawValue
 
-        let context = CGBitmapContextCreate(nil, width, height, 8, bytesPerRow, colorSpace, info);
-        let data = UnsafePointer<UInt8>(CGBitmapContextGetData(context))
+        let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: info);
+        let data = UnsafeMutablePointer<UInt8>(OpaquePointer(context!.data))!
         
         //draw image into context
         let rect = CGRect(x: 0, y: 0, width: width, height: height)
-        CGContextDrawImage(context, rect, image.CGImage)
+        context!.draw(image.cgImage!, in: rect)
         
         //enumerate pixels to generate tiles
         self.init(width: width, height: height)
@@ -72,7 +72,7 @@ class Map {
         }
     }
     
-    func tile(x: Int, _ y: Int) -> Tile {
+    func tile(_ x: Int, _ y: Int) -> Tile {
         
         return tiles[y * width + x]
     }

@@ -13,9 +13,9 @@ class FireGestureRecognizer: UIGestureRecognizer {
     
     var timeThreshold = 0.15
     var distanceThreshold = 5.0
-    private var startTimes = [Int:NSTimeInterval]()
+    private var startTimes = [Int:TimeInterval]()
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         
         //record the start times of each touch
         for touch in touches {
@@ -23,13 +23,13 @@ class FireGestureRecognizer: UIGestureRecognizer {
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
         
         //discard any touches that have moved
         for touch in touches {
             
-            let newPos = touch.locationInView(view)
-            let oldPos = touch.previousLocationInView(view)
+            let newPos = touch.location(in: view)
+            let oldPos = touch.previousLocation(in: view)
             let distanceDelta = Double(max(abs(newPos.x - oldPos.x), abs(newPos.y - oldPos.y)))
             if distanceDelta >= distanceThreshold {
                 startTimes[touch.hash] = nil
@@ -37,7 +37,7 @@ class FireGestureRecognizer: UIGestureRecognizer {
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
         
         for touch in touches {
 
@@ -49,22 +49,22 @@ class FireGestureRecognizer: UIGestureRecognizer {
                 if timeDelta < timeThreshold {
                     
                     //recognized
-                    state = .Ended
+                    state = .ended
                 }
             }
         }
         reset()
     }
     
-    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
         
         reset()
     }
     
     override func reset() {
 
-        if state == .Possible {
-            state = .Failed
+        if state == .possible {
+            state = .failed
         }
     }
 }

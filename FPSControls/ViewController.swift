@@ -41,8 +41,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
     var map: Map!
     
     var tapCount = 0
-    var lastTappedFire: NSTimeInterval = 0
-    var lastFired: NSTimeInterval = 0
+    var lastTappedFire: TimeInterval = 0
+    var lastFired: TimeInterval = 0
     var bullets = [SCNNode]()
     
     override func viewDidLoad() {
@@ -62,7 +62,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             case .Hero:
                 
                 heroNode = SCNNode()
-                heroNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil))
+                heroNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil))
                 heroNode.physicsBody?.angularDamping = 0.9999999
                 heroNode.physicsBody?.damping = 0.9999999
                 heroNode.physicsBody?.rollingFriction = 0
@@ -82,7 +82,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 let monsterNode = SCNNode()
                 monsterNode.position = SCNVector3(x: entity.x, y: 0.3, z: entity.y)
                 monsterNode.geometry = SCNCylinder(radius: 0.15, height: 0.6)
-                monsterNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
+                monsterNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
                 monsterNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
                 monsterNode.physicsBody?.collisionBitMask = CollisionCategory.All
                 if #available(iOS 9.0, *) {
@@ -112,31 +112,31 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             if tile.type == .Wall {
                 
                 //create walls
-                if tile.visibility.contains(.Top) {
+                if tile.visibility.contains(.top) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
-                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(M_PI))
+                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float.pi)
                     wallNode.position = SCNVector3(x: Float(tile.x) + 0.5, y: 0.5, z: Float(tile.y))
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility.contains(.Right) {
+                if tile.visibility.contains(.right) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
-                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(M_PI_2))
+                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float.pi / 2)
                     wallNode.position = SCNVector3(x: Float(tile.x) + 1, y: 0.5, z: Float(tile.y) + 0.5)
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility.contains(.Bottom) {
+                if tile.visibility.contains(.bottom) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
                     wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: 0)
                     wallNode.position = SCNVector3(x: Float(tile.x) + 0.5, y: 0.5, z: Float(tile.y) + 1)
                     mapNode.addChildNode(wallNode)
                 }
-                if tile.visibility.contains(.Left) {
+                if tile.visibility.contains(.left) {
                     let wallNode = SCNNode()
                     wallNode.geometry = SCNPlane(width: 1, height: 1)
-                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: Float(-M_PI_2))
+                    wallNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: -Float.pi / 2)
                     wallNode.position = SCNVector3(x: Float(tile.x), y: 0.5, z: Float(tile.y) + 0.5)
                     mapNode.addChildNode(wallNode)
                 }
@@ -146,19 +146,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         //add floor
         let floorNode = SCNNode()
         floorNode.geometry = SCNPlane(width: CGFloat(map.width), height: CGFloat(map.height))
-        floorNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(-M_PI_2))
+        floorNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: -Float.pi / 2)
         floorNode.position = SCNVector3(x: Float(map.width)/2, y: 0, z: Float(map.height)/2)
         mapNode.addChildNode(floorNode)
 
         //add ceiling
         let ceilingNode = SCNNode()
         ceilingNode.geometry = SCNPlane(width: CGFloat(map.width), height: CGFloat(map.height))
-        ceilingNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(M_PI_2))
+        ceilingNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float.pi / 2)
         ceilingNode.position = SCNVector3(x: Float(map.width)/2, y: 1, z: Float(map.height)/2)
         mapNode.addChildNode(ceilingNode)
 
         //set up map physics
-        mapNode.physicsBody = SCNPhysicsBody(type: .Static, shape: SCNPhysicsShape(node: mapNode, options: [SCNPhysicsShapeKeepAsCompoundKey: true]))
+        mapNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: mapNode, options: [SCNPhysicsShape.Option.keepAsCompound: true]))
         mapNode.physicsBody?.categoryBitMask = CollisionCategory.Map
         mapNode.physicsBody?.collisionBitMask = CollisionCategory.All
         if #available(iOS 9.0, *) {
@@ -174,79 +174,83 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         sceneView.showsStatistics = true
         
         //configure the view
-        sceneView.backgroundColor = UIColor.blackColor()
+        sceneView.backgroundColor = UIColor.black
         
         //look gesture
-        lookGesture = UIPanGestureRecognizer(target: self, action: "lookGestureRecognized:")
+        lookGesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.lookGestureRecognized))
         lookGesture.delegate = self
         view.addGestureRecognizer(lookGesture)
         
         //walk gesture
-        walkGesture = UIPanGestureRecognizer(target: self, action: "walkGestureRecognized:")
+        walkGesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.walkGestureRecognized))
         walkGesture.delegate = self
         view.addGestureRecognizer(walkGesture)
 
         //fire gesture
-        fireGesture = FireGestureRecognizer(target: self, action: "fireGestureRecognized:")
+        fireGesture = FireGestureRecognizer(target: self, action: #selector(ViewController.fireGestureRecognized))
         fireGesture.delegate = self
         view.addGestureRecognizer(fireGesture)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5) {
             self.overlayView.alpha = 1
         }
     }
     
     @IBAction func hideOverlay() {
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5) {
             self.overlayView.alpha = 0
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         
         if gestureRecognizer == lookGesture {
-            return touch.locationInView(view).x > view.frame.size.width / 2
+            return touch.location(in: view).x > view.frame.size.width / 2
         } else if gestureRecognizer == walkGesture {
-            return touch.locationInView(view).x < view.frame.size.width / 2
+            return touch.location(in: view).x < view.frame.size.width / 2
         }
         return true
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
         return true
     }
     
-    func lookGestureRecognized(gesture: UIPanGestureRecognizer) {
+    @objc
+    func lookGestureRecognized(_ gesture: UIPanGestureRecognizer) {
         
         //get translation and convert to rotation
-        let translation = gesture.translationInView(self.view)
-        let hAngle = acos(Float(translation.x) / 200) - Float(M_PI_2)
-        let vAngle = acos(Float(translation.y) / 200) - Float(M_PI_2)
+        let translation = gesture.translation(in: self.view)
+        let hAngle = acos(Float(translation.x) / 200) - Float.pi / 2
+        let vAngle = acos(Float(translation.y) / 200) - Float.pi / 2
         
         //rotate hero
-        heroNode.physicsBody?.applyTorque(SCNVector4(x: 0, y: 1, z: 0, w: hAngle), impulse: true)
+        heroNode.physicsBody?.applyTorque(SCNVector4(x: 0, y: 1, z: 0, w: hAngle), asImpulse: true)
         
         //tilt camera
-        elevation = max(Float(-M_PI_4), min(Float(M_PI_4), elevation + vAngle))
+        let pi_4 = Float.pi / 4
+        elevation = max(-pi_4, min(pi_4, elevation + vAngle))
         camNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: elevation)
         
         //reset translation
-        gesture.setTranslation(CGPointZero, inView: self.view)
+        gesture.setTranslation(.zero, in: self.view)
     }
     
-    func walkGestureRecognized(gesture: UIPanGestureRecognizer) {
+    @objc
+    func walkGestureRecognized(_ gesture: UIPanGestureRecognizer) {
 
-        if gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled {
-            gesture.setTranslation(CGPointZero, inView: self.view)
+        if gesture.state == UIGestureRecognizer.State.ended || gesture.state == UIGestureRecognizer.State.cancelled {
+            gesture.setTranslation(.zero, in: self.view)
         }
     }
     
-    func fireGestureRecognized(gesture: FireGestureRecognizer) {
+    @objc
+    func fireGestureRecognized(_ gesture: FireGestureRecognizer) {
 
         //update timestamp
         let now = CFAbsoluteTimeGetCurrent()
@@ -258,20 +262,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
         lastTappedFire = now
     }
 
-    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         
         //get walk gesture translation
-        let translation = walkGesture.translationInView(self.view)
+        let translation = walkGesture.translation(in: self.view)
 
         //create impulse vector for hero
-        let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
+        let angle = heroNode.presentation.rotation.w * heroNode.presentation.rotation.y
         var impulse = SCNVector3(x: max(-1, min(1, Float(translation.x) / 50)), y: 0, z: max(-1, min(1, Float(-translation.y) / 50)))
         impulse = SCNVector3(
             x: impulse.x * cos(angle) - impulse.z * sin(angle),
             y: 0,
             z: impulse.x * -sin(angle) - impulse.z * cos(angle)
         )
-        heroNode.physicsBody?.applyForce(impulse, impulse: true)
+        heroNode.physicsBody?.applyForce(impulse, asImpulse: true)
         
         //handle firing
         let now = CFAbsoluteTimeGetCurrent()
@@ -280,7 +284,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
             if now - lastFired > 1 / fireRate {
                 
                 //get hero direction vector
-                let angle = heroNode.presentationNode.rotation.w * heroNode.presentationNode.rotation.y
+                let angle = heroNode.presentation.rotation.w * heroNode.presentation.rotation.y
                 var direction = SCNVector3(x: -sin(angle), y: 0, z: -cos(angle))
                 
                 //get elevation
@@ -291,13 +295,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                     if self.bullets.count < self.maxBullets {
                         return SCNNode()
                     } else {
-                        return self.bullets.removeAtIndex(0)
+                        return self.bullets.remove(at: 0)
                     }
                 }()
                 bullets.append(bulletNode)
                 bulletNode.geometry = SCNBox(width: CGFloat(bulletRadius) * 2, height: CGFloat(bulletRadius) * 2, length: CGFloat(bulletRadius) * 2, chamferRadius: CGFloat(bulletRadius))
-                bulletNode.position = SCNVector3(x: heroNode.presentationNode.position.x, y: 0.4, z: heroNode.presentationNode.position.z)
-                bulletNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
+                bulletNode.position = SCNVector3(x: heroNode.presentation.position.x, y: 0.4, z: heroNode.presentation.position.z)
+                bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
                 bulletNode.physicsBody?.categoryBitMask = CollisionCategory.Bullet
                 bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Hero
                 bulletNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0.5, z: 1)
@@ -305,7 +309,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, SCNSceneRen
                 
                 //apply impulse
                 let impulse = SCNVector3(x: direction.x * Float(bulletImpulse), y: direction.y * Float(bulletImpulse), z: direction.z * Float(bulletImpulse))
-                bulletNode.physicsBody?.applyForce(impulse, impulse: true)
+                bulletNode.physicsBody?.applyForce(impulse, asImpulse: true)
                 
                 //update timestamp
                 lastFired = now
