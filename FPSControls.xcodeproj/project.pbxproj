@@ -145,6 +145,7 @@
 				TargetAttributes = {
 					01558A2F1A0291A700083EB1 = {
 						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -317,7 +318,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -331,6 +331,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charcoaldesign.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FPSControls;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -344,6 +345,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charcoaldesign.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FPSControls;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

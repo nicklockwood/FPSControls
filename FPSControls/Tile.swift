@@ -15,14 +15,14 @@ enum TileType {
     case Floor
 }
 
-struct FaceVisibility : OptionSetType {
+struct FaceVisibility: OptionSet {
 
     let rawValue: UInt
-    static let None = FaceVisibility(rawValue: 0)
-    static let Top = FaceVisibility(rawValue: 1 << 0)
-    static let Right = FaceVisibility(rawValue: 1 << 1)
-    static let Bottom = FaceVisibility(rawValue: 1 << 2)
-    static let Left = FaceVisibility(rawValue: 1 << 3)
+    static let none = FaceVisibility([])
+    static let top = FaceVisibility(rawValue: 1 << 0)
+    static let right = FaceVisibility(rawValue: 1 << 1)
+    static let bottom = FaceVisibility(rawValue: 1 << 2)
+    static let left = FaceVisibility(rawValue: 1 << 3)
 }
 
 class Tile {
@@ -31,18 +31,18 @@ class Tile {
     let x, y: Int
     var type: TileType = .Rock
     var visibility: FaceVisibility {
-        var visibility: FaceVisibility = .None
+        var visibility: FaceVisibility = .none
         if x > 0 && map.tile(x - 1, y).type == .Floor {
-            visibility.unionInPlace(.Left)
+            visibility.insert(.left)
         }
         if x < map.width - 1 && map.tile(x + 1, y).type == .Floor {
-            visibility.unionInPlace(.Right)
+            visibility.insert(.right)
         }
         if y > 0 && map.tile(x, y - 1).type == .Floor {
-            visibility.unionInPlace(.Top)
+            visibility.insert(.top)
         }
         if y < map.height - 1 && map.tile(x, y + 1).type == .Floor {
-            visibility.unionInPlace(.Bottom)
+            visibility.insert(.bottom)
         }
         return visibility
     }
